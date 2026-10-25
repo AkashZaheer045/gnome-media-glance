@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
+  <enum id="org.gnome.shell.extensions.mediaglance.PanelBox">
+    <value nick="left" value="0"/>
+    <value nick="center" value="1"/>
+    <value nick="right" value="2"/>
+  </enum>
   <schema id="org.gnome.shell.extensions.mediaglance"
           path="/org/gnome/shell/extensions/mediaglance/">
-    <!-- v1 has no preferences; the schema exists for future settings. -->
+    <key name="panel-position" enum="org.gnome.shell.extensions.mediaglance.PanelBox">
+      <default>'right'</default>
+      <summary>Panel box</summary>
+      <description>Which area of the top bar the control sits in: left, center, or right.</description>
+    </key>
+    <key name="panel-index" type="i">
+      <default>0</default>
+      <range min="0" max="20"/>
+      <summary>Position within the box</summary>
+      <description>Order within the chosen box. 0 is the outermost edge; higher numbers move it toward the center.</description>
+    </key>
   </schema>
 </schemalist>

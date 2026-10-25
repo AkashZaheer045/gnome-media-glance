@@ -12,26 +12,47 @@ import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/
 
 export default class MediaGlancePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
+        const settings = this.getSettings();
+
         const page = new Adw.PreferencesPage({
             title: 'General',
             icon_name: 'audio-x-generic-symbolic',
         });
 
-        // --- Placeholder group: real options will land here later ---
-        const options = new Adw.PreferencesGroup({
-            title: 'Options',
-            description: 'Settings for Media Glance will appear here. Nothing to '
-                + 'configure yet — the control shows automatically whenever '
-                + 'something is playing.',
+        // --- Panel placement ---
+        const placement = new Adw.PreferencesGroup({
+            title: 'Panel placement',
+            description: 'Where the control sits in the top bar. Default is the '
+                + 'right box, outermost, so the clock stays centered.',
         });
-        const placeholder = new Adw.ActionRow({
-            title: 'No options yet',
-            subtitle: 'Coming soon',
-            sensitive: false,
+
+        // Position: left / center / right
+        const BOXES = ['left', 'center', 'right'];
+        const positionRow = new Adw.ComboRow({
+            title: 'Position',
+            subtitle: 'Which area of the top bar',
+            model: Gtk.StringList.new(['Left', 'Center', 'Right']),
         });
-        placeholder.add_prefix(new Gtk.Image({ icon_name: 'preferences-system-symbolic' }));
-        options.add(placeholder);
-        page.add(options);
+        const curBox = settings.get_string('panel-position');
+        positionRow.selected = Math.max(0, BOXES.indexOf(curBox));
+        positionRow.connect('notify::selected', row => {
+            settings.set_string('panel-position', BOXES[row.selected]);
+        });
+        placement.add(positionRow);
+
+        // Index within the chosen box
+        const indexRow = new Adw.SpinRow({
+            title: 'Order within the box',
+            subtitle: '0 is the outermost edge; higher moves it toward the center',
+            adjustment: new Gtk.Adjustment({
+                lower: 0, upper: 20, step_increment: 1, page_increment: 1,
+            }),
+        });
+        settings.bind('panel-index', indexRow, 'value',
+            Gio.SettingsBindFlags.DEFAULT);
+        placement.add(indexRow);
+
+        page.add(placement);
 
         // --- About group ---
         const about = new Adw.PreferencesGroup({ title: 'About' });
