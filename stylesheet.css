@@ -1,0 +1,109 @@
+/* Media Glance
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ * Media card rules adapted from the Kiwi extension stylesheet
+ * (https://github.com/kem-a/kiwi-kemma), GPL-3.0; prefix kiwi- -> mg-.
+ */
+
+/* Panel */
+.mg-panel-box {
+  spacing: 2px;
+}
+
+.mg-service-icon {
+  margin-right: 4px;
+}
+
+.mg-panel-button {
+  padding: 0 4px;
+  border-radius: 99px;
+}
+
+.mg-panel-button:hover,
+.mg-panel-button:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.mg-panel-button:active {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Popup */
+.mg-media-menu {
+  width: 340px;
+  padding: 8px 12px;
+}
+
+.mg-media-list {
+  spacing: 12px;
+  padding: 0 2px;
+}
+
+.mg-media-card {
+  spacing: 12px;
+  padding: 4px;
+  font-size: 0.9em;
+}
+
+.mg-media-content {
+  spacing: 4px;
+  padding: 4px 0;
+  min-width: 0;
+}
+
+.mg-media-artwork {
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.mg-media-artwork-placeholder {
+  icon-size: 48px;
+}
+
+.mg-track-title {
+  min-height: 1.2em;
+}
+
+.mg-track-title-label {
+  font-weight: bold;
+}
+
+.mg-media-artist {
+  font-weight: normal;
+}
+
+.mg-media-controls {
+  margin-top: 4px;
+  spacing: 4px;
+}
+
+.mg-media-control {
+  padding: 4px 12px;
+}
+
+.mg-media-artist-row {
+  spacing: 6px;
+}
+
+.mg-media-soundwave {
+  spacing: 2px;
+}
+
+.mg-media-soundwave-bar {
+  width: 2px;
+  height: 12px;
+  border-radius: 1px;
+}
+
+.mg-media-progress {
+  padding: 6px 0 0;
+}
+
+.mg-media-progress .slider {
+  height: 18px;
+  -slider-handle-radius: 5px;
+}
+
+.mg-media-times {
+  font-size: 0.85em;
+  opacity: 0.7;
+}

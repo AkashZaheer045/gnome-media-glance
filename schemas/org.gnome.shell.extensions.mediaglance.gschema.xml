@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.mediaglance"
+          path="/org/gnome/shell/extensions/mediaglance/">
+    <!-- v1 has no preferences; the schema exists for future settings. -->
+  </schema>
+</schemalist>
