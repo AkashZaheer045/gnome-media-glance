@@ -3,7 +3,8 @@
   "name": "Media Glance",
   "description": "A standalone top-bar music control: service icon with previous / play-pause / next, and a popup card with artwork, scrolling title and a seek slider. Adapted from the media controls of the Kiwi extension.",
   "shell-version": ["48", "49", "50", "51"],
-  "version": 1,
+  "version": 2,
+  "version-name": "0.2.0",
   "gettext-domain": "mediaglance@akashzaheer045.github.com",
   "settings-schema": "org.gnome.shell.extensions.mediaglance",
   "url": "https://github.com/AkashZaheer045/gnome-media-glance"
