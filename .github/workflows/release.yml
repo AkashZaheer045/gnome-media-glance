@@ -1,0 +1,64 @@
+name: Upload to extensions.gnome.org
+
+# Packs the extension and uploads it to extensions.gnome.org (EGO) whenever a
+# GitHub Release is published. NOTE: EGO reviews every upload by a human, so a
+# successful run only puts the new version in the review queue — it does not go
+# live until a GNOME reviewer approves it.
+#
+# Requires two repository secrets (Settings -> Secrets and variables -> Actions):
+#   EGO_USER      your extensions.gnome.org account username (or email)
+#   EGO_PASSWORD  that account's password
+# EGO has no API tokens, so these are the real account credentials. See RELEASING.md.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:        # lets you trigger a manual upload from the Actions tab
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    # gnome-extensions `upload` exists only in GNOME Shell 49+, so run inside a
+    # container new enough to ship it rather than the runner's older GNOME.
+    container: ubuntu:26.04
+    steps:
+      - name: Install tooling
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            gnome-shell git zip ca-certificates
+          echo "gnome-extensions version: $(gnome-extensions version || true)"
+
+      - name: Check credentials are present
+        env:
+          EGO_USER: ${{ secrets.EGO_USER }}
+          EGO_PASSWORD: ${{ secrets.EGO_PASSWORD }}
+        run: |
+          if [ -z "$EGO_USER" ] || [ -z "$EGO_PASSWORD" ]; then
+            echo "::error::EGO_USER / EGO_PASSWORD secrets are not set. See RELEASING.md."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Pack extension
+        run: |
+          gnome-extensions pack . --force \
+            --extra-source=lib \
+            --extra-source=icons \
+            --extra-source=prefs.js \
+            --extra-source=LICENSE \
+            -o .
+          ls -l mediaglance@akashzaheer045.github.com.shell-extension.zip
+
+      - name: Upload to extensions.gnome.org
+        env:
+          EGO_USER: ${{ secrets.EGO_USER }}
+          EGO_PASSWORD: ${{ secrets.EGO_PASSWORD }}
+        run: |
+          printf '%s' "$EGO_PASSWORD" | gnome-extensions upload \
+            mediaglance@akashzaheer045.github.com.shell-extension.zip \
+            --user "$EGO_USER" \
+            --password-file=- \
+            --accept-tos
+          echo "Uploaded. Now awaiting human review at https://extensions.gnome.org/."
